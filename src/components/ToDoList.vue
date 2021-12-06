@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="todoList">
-      <ToDoItem v-for="(todo, index) in todoList" :key="index" :data="todo" @TodoDone="TodoDone"/>
+      <ToDoItem v-for="(todo, index) in todoList" :key="index" :data="todo" @TodoDone="TodoDone" @DeleteTodo="DeleteTodo"/>
       <div class="summary">
         <div class="items_count">
           <span>
@@ -46,6 +46,9 @@ export default {
     },
     TodoDone: function(value){
       this.$emit("TodoDone", value);
+    },
+    DeleteTodo: function(value){
+      this.$emit("DeleteTodo", value);
     }
   }
 }

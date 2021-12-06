@@ -6,20 +6,35 @@
           <img src="../assets/icon-check.svg" alt="" :v-if="this.data.checked">
         </div>
       </div>
-      <h1 :class="this.data.checked ? 'done' : ''">{{data.title}}</h1>
+      <h1 :class="this.data.checked ? 'done' : ''" @mouseover="DisplayDeleteBtn()">{{data.title}}</h1>
+      <div class="cross" @click="DeleteTodo()">
+        <img src="../assets/icon-cross.svg" alt="" v-if="this.displayDeleteBtn">
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    data: Object
+  data(){
+    return {
+      displayDeleteBtn: false
+    }
   },
+  props: {
+    data: Object,
+    },
   methods: {
     CheckTodo() {
       this.data.checked = !this.data.checked;
       this.$emit("TodoDone", this.data);
+    },
+    DisplayDeleteBtn(){
+      this.displayDeleteBtn = !this.displayDeleteBtn;
+      console.log(this.displayDeleteBtn);
+    },
+    DeleteTodo(){
+      this.$emit("DeleteTodo", this.data);
     }
   }
 }
@@ -60,7 +75,10 @@ export default {
       text-decoration: line-through
     h1
       overflow-x: scroll
+      width: 80%
     h1::-webkit-scrollbar
       display: none
+    .cross
+      cursor: pointer
 
 </style>

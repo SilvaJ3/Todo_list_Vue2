@@ -11,6 +11,7 @@
       @changeCurrentFilter="changeFilter" 
       @TodoDone="TodoDone"
       @clearCompleted="clearCompleted"
+      @DeleteTodo="DeleteTodo"
       />
     </main>
   </div>
@@ -54,6 +55,11 @@ export default {
     TodoDone(value){
       let index = this.todoList.indexOf(value);
       this.todoList[index].done = !this.todoList[index].done;
+    },
+    // Suppression d'une tâche
+    DeleteTodo(value){
+      let index = this.todoList.indexOf(value);
+      this.todoList.splice(index, 1);
     },
     // Suppression des tâches complétées
     clearCompleted(){
