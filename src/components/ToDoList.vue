@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="todoList">
-      <ToDoItem v-for="(todo, index) in todoList" :key="index" :data="todo"/>
+      <ToDoItem v-for="(todo, index) in todoList" :key="index" :data="todo" @TodoDone="TodoDone"/>
       <div class="summary">
         <div class="items_count">
           <span>
@@ -13,7 +13,7 @@
           <span :class="currentFilter === 'Active' ? 'active' : ''" @click="changeFilter('Active')">Active</span>
           <span :class="currentFilter === 'Completed' ? 'active' : ''" @click="changeFilter('Completed')">Completed</span>
         </div>
-        <div class="clear">
+        <div class="clear" @click="clearCompleted()">
           <span>Clear Completed</span>
         </div>
       </div>
@@ -40,6 +40,12 @@ export default {
     changeFilter: function(filter){
       this.currentFilter = filter;
       this.$emit("changeCurrentFilter", filter);
+    },
+    clearCompleted: function() {
+      this.$emit("clearCompleted");
+    },
+    TodoDone: function(value){
+      this.$emit("TodoDone", value);
     }
   }
 }
@@ -76,4 +82,8 @@ export default {
         color: hsl(235, 19%, 35%)
     .clear
       font-size: 14px
+      span
+        cursor: pointer
+      span:hover
+        color: hsl(235, 19%, 35%) !important
 </style>

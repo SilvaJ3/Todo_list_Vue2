@@ -6,7 +6,12 @@
       </div>
     </header>
     <main>
-      <ToDoList :todoList="todoList" @changeCurrentFilter="changeFilter"/>
+      <ToDoList 
+      :todoList="todoListUpdated" 
+      @changeCurrentFilter="changeFilter" 
+      @TodoDone="TodoDone"
+      @clearCompleted="clearCompleted"
+      />
     </main>
   </div>
 </template>
@@ -32,6 +37,7 @@ export default {
     }
   },
   methods: {
+    // Ajout d'une tâche
     newTodo(value){
       let todo = {
         title: value,
@@ -40,19 +46,38 @@ export default {
       }
       this.todoList.push(todo);
     },
+    // Modification du filtre
     changeFilter(value){
       this.currentFilter = value;
     },
+    // Tâche complétée
+    TodoDone(value){
+      let index = this.todoList.indexOf(value);
+      this.todoList[index].done = !this.todoList[index].done;
+    },
+    // Suppression des tâches complétées
+    clearCompleted(){
+      for (let index = 0; index < this.filterList.length; index++) {
+        let element = this.filterList[index];
+        if(element.done) {
+          this.filterList.splice(index, 1);
+          index--;
+        }
+      }
+    },
+    // Mise à jour de la liste des tâches
     UpdateFilterList() {
       if (this.currentFilter === "All") {
         this.filterList = this.todoList;
       } else if (this.currentFilter === "Active") {
+        this.filterList = [];
         this.todoList.forEach(element => {
           if(!element.done) {
             this.filterList.push(element);
           }
         });
       } else {
+        this.filterList = [];
         this.todoList.forEach(element => {
           if(element.done) {
             this.filterList.push(element);
