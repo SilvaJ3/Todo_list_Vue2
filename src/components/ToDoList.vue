@@ -1,8 +1,15 @@
 <template>
   <section>
     <div class="todoList">
-      <ToDoItem v-for="(todo, index) in todoList" :key="index" :data="todo" @TodoDone="TodoDone" @DeleteTodo="DeleteTodo"/>
-      <div class="summary">
+      <ToDoItem 
+      v-for="(todo, index) in todoList" 
+      :key="index" 
+      :data="todo" 
+      :darkMode="darkMode"
+      @TodoDone="TodoDone" 
+      @DeleteTodo="DeleteTodo"
+      />
+      <div class="summary" :class="darkMode ? 'darkMode' : ''">
         <div class="items_count">
           <span>
             {{ todoList.length}} items left
@@ -34,7 +41,8 @@ export default {
     ToDoItem
   },
   props: {
-    todoList: Array
+    todoList: Array,
+    darkMode: Boolean
   },
   methods: {
     changeFilter: function(filter){
@@ -89,4 +97,12 @@ export default {
         cursor: pointer
       span:hover
         color: hsl(235, 19%, 35%) !important
+  .darkMode
+    background-color: hsl(235, 24%, 19%) !important
+    .items_count, .categories, .clear
+      color: hsl(235, 19%, 35%)
+      .active
+        color: hsl(220, 98%, 61%) !important
+    .clear span:hover, .categories span:hover
+      color: hsl(220, 98%, 61%) !important
 </style>

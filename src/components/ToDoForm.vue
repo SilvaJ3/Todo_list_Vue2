@@ -3,10 +3,10 @@
     <div class="todoForm">
       <div class="heading">
         <h1>TODO</h1>
-        <img src="../assets/icon-moon.svg" alt="">
+        <img :src="darkMode ? moon : sun" alt="" @click="() => this.$emit('switchMode')">
       </div>
       <div class="form">
-        <form @submit.prevent>
+        <form @submit.prevent :class="darkMode ? 'darkMode' : ''">
           <div class="checkBox">
           </div>
           <input type="text" placeholder="Create a new todo..." v-model="todo" @keydown.enter="Submit">
@@ -17,10 +17,15 @@
 </template>
 
 <script>
+import moon from "../assets/icon-moon.svg";
+import sun from "../assets/icon-sun.svg";
+
 export default {
   data(){
     return {
-      todo: ""
+      todo: "",
+      moon: moon,
+      sun: sun
     }
   },
   methods: {
@@ -30,6 +35,9 @@ export default {
         this.todo = "";
       }
     }
+  },
+  props: {
+    darkMode: Boolean
   }
 }
 </script>
@@ -48,6 +56,8 @@ export default {
     h1
       letter-spacing: 15px
       font-size: 45px
+    img
+      cursor: pointer
   .form
     width: 100%
     padding: auto 5%
@@ -75,5 +85,9 @@ export default {
       width: 150%
     input:focus
       outline: none
-    
+  .darkMode
+    background-color: hsl(235, 24%, 19%) !important
+    input
+      background-color: hsl(235, 24%, 19%) !important
+      color: white
 </style>

@@ -1,13 +1,14 @@
 <template>
   <div id="app">
-    <header>
-      <div class="header">
-        <ToDoForm @newTodo="newTodo"/>
+    <header :class="darkMode ? 'darkMode' : ''">
+      <div class="header" :class="darkMode ? `dark` : `light`">
+        <ToDoForm @newTodo="newTodo" :darkMode="darkMode" @switchMode="switchMode"/>
       </div>
     </header>
-    <main>
+    <main :class="darkMode ? 'darkMode' : ''">
       <ToDoList 
       :todoList="todoListUpdated" 
+      :darkMode="darkMode"
       @changeCurrentFilter="changeFilter" 
       @TodoDone="TodoDone"
       @clearCompleted="clearCompleted"
@@ -27,14 +28,16 @@ export default {
   data() {
     return {
       todoList: [
-        {
-          title: "Hello World",
-          checked: false,
-          done: false
-        }
+        // {
+        //   title: "Hello World",
+        //   done: false
+        // }
       ],
       filterList: [],
-      currentFilter: "All"
+      currentFilter: "All",
+      darkMode: true,
+      BgLightMode: "./assets/bg-desktop-light.jpg",
+      BgDarkMode: "./assets/bg-desktop-dark.jpg",
     }
   },
   methods: {
@@ -42,7 +45,6 @@ export default {
     newTodo(value){
       let todo = {
         title: value,
-        checked: false,
         done: false,
       }
       this.todoList.push(todo);
@@ -63,10 +65,10 @@ export default {
     },
     // Suppression des tâches complétées
     clearCompleted(){
-      for (let index = 0; index < this.filterList.length; index++) {
-        let element = this.filterList[index];
+      for (let index = 0; index < this.todoList.length; index++) {
+        let element = this.todoList[index];
         if(element.done) {
-          this.filterList.splice(index, 1);
+          this.todoList.splice(index, 1);
           index--;
         }
       }
@@ -90,6 +92,10 @@ export default {
           }
         })
       }
+    },
+    // Changement de thème
+    switchMode(){
+      this.darkMode = !this.darkMode;
     }
   },
   computed: {
@@ -107,21 +113,30 @@ body
   padding: 0
   box-sizing: border-box
   font-family: 'Josefin Sans', sans-serif
-  background-color: hsl(0, 0%, 98%)
+
+// #app
 
 .header
-  background-image: url("./assets/bg-desktop-light.jpg")
-  background-repeat: no-repeat
   height: 50vh
   width: 100%
-  background-color: linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%))
   margin: 0
+.light
+  background-image: url("./assets/bg-desktop-light.jpg")
+  background-repeat: no-repeat
+  background-color: hsl(0, 0%, 98%)
+
+.dark
+  background-image: url("./assets/bg-desktop-dark.jpg")
+  background-repeat: no-repeat
 
 main
+  background-color: hsl(0, 0%, 98%)
   display: flex
   flex-direction: column
-  justify-content: center
+  justify-content: start
   align-items: center
-  height: 100%
+  min-height: 50vh
   margin: 0
+.darkMode
+  background-color: hsl(235, 24%, 19%) !important
 </style>
